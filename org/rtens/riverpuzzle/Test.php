@@ -59,6 +59,21 @@ class Test extends \PHPUnit_Framework_TestCase {
         $this->thenItNotShouldFindASolution();
     }
 
+    function testImpossibleComplex() {
+        $this->givenAnObject('a');
+        $this->givenAnObject('b');
+        $this->givenAnObject('c');
+        $this->givenAnObject('d');
+        $this->given_WouldEat('a', 'b');
+        $this->given_WouldEat('b', 'c');
+        $this->given_WouldEat('b', 'd');
+
+
+        $this->whenISolveThePuzzle();
+
+        $this->thenItNotShouldFindASolution();
+    }
+
     /** @var Logger */
     public $logger;
 

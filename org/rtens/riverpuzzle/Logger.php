@@ -42,4 +42,8 @@ class Logger {
 
         return $move['object'] . ' => ' . $left . '..' . $right . PHP_EOL;
     }
+
+    public function undoMove() {
+        array_pop($this->moves);
+    }
 }

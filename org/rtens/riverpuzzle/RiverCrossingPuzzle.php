@@ -27,30 +27,29 @@ class RiverCrossingPuzzle {
     }
 
     public function solve() {
-        $state = $this->getStart();
-        $end = $this->getEnd();
-        $moves = $this->getMoves();
+        return $this->solveState($this->getStart(), array($this->getStart()));
+    }
 
-        while (true) {
-            $lastState = $state;
+    private function solveState($state, $previousStates) {
 
-            foreach ($moves as $object) {
-                $nextState = $this->move($object, $state);
-                if ($nextState != $state && $this->isValid($nextState)) {
-                    $state = $nextState;
-                    $this->logger->logMove($object, $state);
-                }
+        foreach ($this->getMoves() as $object) {
+            $nextState = $this->move($object, $state);
 
-                if ($state == $end) {
+            if ($nextState == $this->getEnd()) {
+                $this->logger->logMove($object, $nextState);
+                return true;
+            } else if (!in_array($nextState, $previousStates) && $this->isValid($nextState)) {
+                $this->logger->logMove($object, $nextState);
+                $previousStates[] = $nextState;
+
+                if ($this->solveState($nextState, $previousStates)) {
                     return true;
                 }
             }
-
-            if ($state == $lastState) {
-                return false;
-            }
         }
-        return null;
+
+        $this->logger->undoMove();
+        return false;
     }
 
     private function move($object, $state) {
@@ -62,6 +61,7 @@ class RiverCrossingPuzzle {
             $state[$object] = !$state[$object];
         }
         $state[self::FARMER] = !$state[self::FARMER];
+
 
         return $state;
     }
