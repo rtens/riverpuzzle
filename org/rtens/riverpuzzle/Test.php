@@ -30,7 +30,7 @@ class Test extends \PHPUnit_Framework_TestCase {
         $this->whenISolveThePuzzle();
 
         $this->thenItShouldFindASolution();
-        $this->thenTheMovesShouldBe('b abc b');
+        $this->thenTheMovesShouldBe('b a c');
     }
 
     function testOriginalPuzzle() {

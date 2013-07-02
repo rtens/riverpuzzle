@@ -27,41 +27,45 @@ class RiverCrossingPuzzle {
     }
 
     public function solve() {
-        return $this->solveState($this->getStart(), array($this->getStart()));
+        return $this->solveState($this->getStart(), array());
     }
 
     private function solveState($state, $previousStates) {
-
-        foreach ($this->getMoves() as $object) {
-            $nextState = $this->move($object, $state);
-
-            if ($nextState == $this->getEnd()) {
-                $this->logger->logMove($object, $nextState);
-                return true;
-            } else if (!in_array($nextState, $previousStates) && $this->isValid($nextState)) {
-                $this->logger->logMove($object, $nextState);
-                $previousStates[] = $nextState;
-
-                if ($this->solveState($nextState, $previousStates)) {
-                    return true;
-                }
-            }
+        if ($state == $this->getEnd()) {
+            return true;
+        } else if (!$this->isValid($state)) {
+            return false;
+        } else if (in_array($state, $previousStates)) {
+            return false;
         }
 
-        $this->logger->undoMove();
+        $previousStates[] = $state;
+
+        foreach ($this->getMoves() as $object) {
+            if ($this->canMove($object, $state)) {
+                continue;
+            }
+
+            if ($this->solveState($this->move($object, $state), $previousStates)) {
+                return true;
+            }
+            $this->logger->undoMove();
+        }
+
         return false;
+    }
+
+    private function canMove($object, $state) {
+        return $object != self::NOTHING && $state[$object] != $state[self::FARMER];
     }
 
     private function move($object, $state) {
         if ($object != self::NOTHING) {
-            if ($state[$object] != $state[self::FARMER]) {
-                return $state;
-            }
-
             $state[$object] = !$state[$object];
         }
         $state[self::FARMER] = !$state[self::FARMER];
 
+        $this->logger->logMove($object, $state);
 
         return $state;
     }
@@ -92,11 +96,10 @@ class RiverCrossingPuzzle {
     }
 
     private function getMoves() {
-        $moves = array();
+        $moves = array(self::NOTHING);
         foreach ($this->objects as $object) {
             $moves[] = $object;
         }
-        $moves[] = self::NOTHING;
         return $moves;
     }
 }
