@@ -21,6 +21,18 @@ class Test extends \PHPUnit_Framework_TestCase {
         $this->thenTheMovesShouldBe('a b');
     }
 
+    function testConstraintsWithThree() {
+        $this->givenAnObject('a');
+        $this->givenAnObject('b');
+        $this->givenAnObject('c');
+        $this->given_WouldEat('b', 'c');
+
+        $this->whenISolveThePuzzle();
+
+        $this->thenItShouldFindASolution();
+        $this->thenTheMovesShouldBe('b a c');
+    }
+
     /** @var Logger */
     public $logger;
 
@@ -50,6 +62,10 @@ class Test extends \PHPUnit_Framework_TestCase {
 
     private function thenTheMovesShouldBe($string) {
         $this->assertEquals($string, $this->logger->getMovesAsString());
+    }
+
+    private function given_WouldEat($name1, $name2) {
+        $this->puzzle->addConstraint($name1, $name2);
     }
 
 }

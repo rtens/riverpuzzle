@@ -20,6 +20,9 @@ class RiverCrossingPuzzle {
         $this->objects[] = $id;
     }
 
+    public function addConstraint($id1, $id2) {
+    }
+
     public function solve() {
         $state = $this->getStart();
         $end = $this->getEnd();
