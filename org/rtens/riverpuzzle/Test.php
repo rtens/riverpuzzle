@@ -33,6 +33,19 @@ class Test extends \PHPUnit_Framework_TestCase {
         $this->thenTheMovesShouldBe('b abc b');
     }
 
+    function testOriginalPuzzle() {
+        $this->givenAnObject('g');
+        $this->givenAnObject('w');
+        $this->givenAnObject('s');
+        $this->given_WouldEat('w', 'g');
+        $this->given_WouldEat('g', 's');
+
+        $this->whenISolveThePuzzle();
+
+        $this->thenItShouldFindASolution();
+        $this->thenTheMovesShouldBe('g wgs g');
+    }
+
     /** @var Logger */
     public $logger;
 
