@@ -27,15 +27,19 @@ class Logger {
     public function getVisualizedMoves() {
         $string = '';
         foreach ($this->moves as $move) {
-            $left = '';
-            $right = '';
-            foreach ($move['state'] as $object => $isLeft) {
-                $left .= $isLeft ? $object : '_';
-                $right .= !$isLeft ? $object : '_';
-            }
-
-            $string .= $move['object'] . ' => ' . $left . '..' . $right . PHP_EOL;
+            $string .= $this->visualizeMove($move);
         }
         return $string;
+    }
+
+    private function visualizeMove($move) {
+        $left = '';
+        $right = '';
+        foreach ($move['state'] as $object => $isLeft) {
+            $left .= $isLeft ? $object : '_';
+            $right .= !$isLeft ? $object : '_';
+        }
+
+        return $move['object'] . ' => ' . $left . '..' . $right . PHP_EOL;
     }
 }

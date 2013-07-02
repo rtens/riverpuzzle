@@ -46,6 +46,19 @@ class Test extends \PHPUnit_Framework_TestCase {
         $this->thenTheMovesShouldBe('g wgs g');
     }
 
+    function testImpossible() {
+        $this->givenAnObject('a');
+        $this->givenAnObject('b');
+        $this->givenAnObject('c');
+        $this->given_WouldEat('a', 'b');
+        $this->given_WouldEat('a', 'c');
+        $this->given_WouldEat('b', 'c');
+
+        $this->whenISolveThePuzzle();
+
+        $this->thenItNotShouldFindASolution();
+    }
+
     /** @var Logger */
     public $logger;
 
@@ -71,6 +84,10 @@ class Test extends \PHPUnit_Framework_TestCase {
 
     private function thenItShouldFindASolution() {
         $this->assertTrue($this->solved);
+    }
+
+    private function thenItNotShouldFindASolution() {
+        $this->assertFalse($this->solved);
     }
 
     private function thenTheMovesShouldBe($string) {

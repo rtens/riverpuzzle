@@ -31,7 +31,9 @@ class RiverCrossingPuzzle {
         $end = $this->getEnd();
         $moves = $this->getMoves();
 
-        while ($state != $end) {
+        while (true) {
+            $lastState = $state;
+
             foreach ($moves as $object) {
                 $nextState = $this->move($object, $state);
                 if ($nextState != $state && $this->isValid($nextState)) {
@@ -43,8 +45,12 @@ class RiverCrossingPuzzle {
                     return true;
                 }
             }
+
+            if ($state == $lastState) {
+                return false;
+            }
         }
-        return false;
+        return null;
     }
 
     private function move($object, $state) {
