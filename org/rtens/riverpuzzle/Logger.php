@@ -23,4 +23,19 @@ class Logger {
     public function getMoves() {
         return $this->moves;
     }
+
+    public function getVisualizedMoves() {
+        $string = '';
+        foreach ($this->moves as $move) {
+            $left = '';
+            $right = '';
+            foreach ($move['state'] as $object => $isLeft) {
+                $left .= $isLeft ? $object : '_';
+                $right .= !$isLeft ? $object : '_';
+            }
+
+            $string .= $move['object'] . ' => ' . $left . '..' . $right . PHP_EOL;
+        }
+        return $string;
+    }
 }

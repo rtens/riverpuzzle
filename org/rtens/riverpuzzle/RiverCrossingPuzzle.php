@@ -7,6 +7,8 @@ class RiverCrossingPuzzle {
 
     const NOTHING = ' ';
 
+    public $constraints = array();
+
     private $objects = array();
 
     /** @var Logger */
@@ -21,6 +23,7 @@ class RiverCrossingPuzzle {
     }
 
     public function addConstraint($id1, $id2) {
+        $this->constraints[] = array($id1, $id2);
     }
 
     public function solve() {
@@ -30,7 +33,11 @@ class RiverCrossingPuzzle {
 
         while ($state != $end) {
             foreach ($moves as $object) {
-                $state = $this->move($object, $state);
+                $nextState = $this->move($object, $state);
+                if ($nextState != $state && $this->isValid($nextState)) {
+                    $state = $nextState;
+                    $this->logger->logMove($object, $state);
+                }
 
                 if ($state == $end) {
                     return true;
@@ -50,9 +57,16 @@ class RiverCrossingPuzzle {
         }
         $state[self::FARMER] = !$state[self::FARMER];
 
-        $this->logger->logMove($object, $state);
-
         return $state;
+    }
+
+    private function isValid($state) {
+        foreach ($this->constraints as $constraint) {
+            if ($state[$constraint[0]] == $state[$constraint[1]] && $state[$constraint[0]] != $state[self::FARMER]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private function getStart() {

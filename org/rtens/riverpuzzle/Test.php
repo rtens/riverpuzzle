@@ -30,7 +30,7 @@ class Test extends \PHPUnit_Framework_TestCase {
         $this->whenISolveThePuzzle();
 
         $this->thenItShouldFindASolution();
-        $this->thenTheMovesShouldBe('b a c');
+        $this->thenTheMovesShouldBe('b abc b');
     }
 
     /** @var Logger */
@@ -66,6 +66,10 @@ class Test extends \PHPUnit_Framework_TestCase {
 
     private function given_WouldEat($name1, $name2) {
         $this->puzzle->addConstraint($name1, $name2);
+    }
+
+    private function visualizeMoves() {
+        echo PHP_EOL . $this->logger->getVisualizedMoves();
     }
 
 }
