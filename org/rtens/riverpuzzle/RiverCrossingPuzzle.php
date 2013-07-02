@@ -5,6 +5,8 @@ class RiverCrossingPuzzle {
 
     const FARMER = '!';
 
+    const NOTHING = ' ';
+
     private $objects = array();
 
     /** @var Logger */
@@ -21,17 +23,32 @@ class RiverCrossingPuzzle {
     public function solve() {
         $state = $this->getStart();
         $end = $this->getEnd();
+        $moves = $this->getMoves();
 
-        foreach ($this->objects as $object) {
-            $state = $this->move($object, $state);
-            $this->logger->logMove($object, $state);
+        while ($state != $end) {
+            foreach ($moves as $object) {
+                $state = $this->move($object, $state);
+
+                if ($state == $end) {
+                    return true;
+                }
+            }
         }
-        return true;
+        return false;
     }
 
     private function move($object, $state) {
+        if ($object != self::NOTHING) {
+            if ($state[$object] != $state[self::FARMER]) {
+                return $state;
+            }
+
+            $state[$object] = !$state[$object];
+        }
         $state[self::FARMER] = !$state[self::FARMER];
-        $state[$object] = !$state[$object];
+
+        $this->logger->logMove($object, $state);
+
         return $state;
     }
 
@@ -49,5 +66,14 @@ class RiverCrossingPuzzle {
             $state[$object] = $v;
         }
         return $state;
+    }
+
+    private function getMoves() {
+        $moves = array();
+        foreach ($this->objects as $object) {
+            $moves[] = $object;
+        }
+        $moves[] = self::NOTHING;
+        return $moves;
     }
 }

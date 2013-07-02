@@ -18,7 +18,7 @@ class Test extends \PHPUnit_Framework_TestCase {
         $this->whenISolveThePuzzle();
 
         $this->thenItShouldFindASolution();
-        $this->thenTheMovesShouldBe('ab');
+        $this->thenTheMovesShouldBe('a b');
     }
 
     /** @var Logger */

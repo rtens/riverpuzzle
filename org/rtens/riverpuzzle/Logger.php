@@ -19,4 +19,8 @@ class Logger {
             'state' => $state
         );
     }
+
+    public function getMoves() {
+        return $this->moves;
+    }
 }
