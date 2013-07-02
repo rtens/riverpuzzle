@@ -11,6 +11,16 @@ class Test extends \PHPUnit_Framework_TestCase {
         $this->thenTheMovesShouldBe('a');
     }
 
+    function testCrossRiverWithTwo() {
+        $this->givenAnObject('a');
+        $this->givenAnObject('b');
+
+        $this->whenISolveThePuzzle();
+
+        $this->thenItShouldFindASolution();
+        $this->thenTheMovesShouldBe('ab');
+    }
+
     /** @var Logger */
     public $logger;
 
