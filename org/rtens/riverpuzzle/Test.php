@@ -1,23 +1,45 @@
 <?php
 namespace org\rtens\riverpuzzle;
- 
+
 class Test extends \PHPUnit_Framework_TestCase {
+
+    function testCrossRiverWithOne() {
+        $this->givenAnObject('a');
+        $this->whenISolveThePuzzle();
+
+        $this->thenItShouldFindASolution();
+        $this->thenTheMovesShouldBe('a');
+    }
 
     /** @var Logger */
     public $logger;
 
-    function testCrossRiver() {
-        $puzzle = new RiverCrossingPuzzle($this->logger);
-        $puzzle->addObject('a');
-        $solved = $puzzle->solve();
+    /** @var RiverCrossingPuzzle */
+    public $puzzle;
 
-        $this->assertTrue($solved);
-        $this->assertEquals('a', $this->logger->getMovesAsString());
-    }
+    /** @var boolean|null */
+    public $solved;
 
     protected function setUp() {
         parent::setUp();
         $this->logger = new Logger();
+        $this->puzzle = new RiverCrossingPuzzle($this->logger);
+    }
+
+    private function givenAnObject($name) {
+        $this->puzzle->addObject($name);
+    }
+
+    private function whenISolveThePuzzle() {
+        $this->solved = $this->puzzle->solve();
+    }
+
+    private function thenItShouldFindASolution() {
+        $this->assertTrue($this->solved);
+    }
+
+    private function thenTheMovesShouldBe($string) {
+        $this->assertEquals($string, $this->logger->getMovesAsString());
     }
 
 }
