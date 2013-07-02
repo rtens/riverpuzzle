@@ -3,7 +3,20 @@ namespace org\rtens\riverpuzzle;
  
 class Logger {
 
+    private $moves = array();
+
     public function getMovesAsString() {
-        return 'a';
+        $string = '';
+        foreach ($this->moves as $move) {
+            $string .= $move['object'];
+        }
+        return $string;
+    }
+
+    public function logMove($object, $state) {
+        $this->moves[] = array(
+            'object' => $object,
+            'state' => $state
+        );
     }
 }
