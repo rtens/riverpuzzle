@@ -1,0 +1,7 @@
+<phpunit bootstrap="bootstrap.php">
+    <testsuites>
+        <testsuite name="all">
+            <file>org/rtens/riverpuzzle/Test.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
